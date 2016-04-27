@@ -63,7 +63,7 @@ echo "Deploying on $SERVER"
 
 ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 
-	 php artisan down &&
+	 sudo php artisan down &&
 
 	 tput bold &&
 	 echo'' &&
@@ -75,22 +75,22 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 tput setaf 6 &&
 	 echo 'git fetch --all' &&
 	 tput sgr0 &&
-	 git fetch --all &&
+	 sudo git fetch --all &&
 
 	 tput setaf 6 &&
 	 echo 'git reset --hard origin/$BRANCH' &&
 	 tput sgr0 &&
-	 git reset --hard origin/$BRANCH && 
+	 sudo git reset --hard origin/$BRANCH && 
 
 	 tput setaf 6 &&
 	 echo 'git checkout $BRANCH' &&
 	 tput sgr0 &&
-	 git checkout $BRANCH &&
+	 sudo git checkout $BRANCH &&
 
 	 tput setaf 6 &&
 	 echo 'git pull --rebase' &&
 	 tput sgr0 &&
-	 git pull --rebase &&
+	 sudo git pull --rebase &&
 
 	 tput bold &&
 	 echo'' &&
@@ -109,7 +109,8 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 tput setaf 6 &&
 	 echo 'composer install' &&
 	 tput sgr0 &&
-	 runuser -l bgarner -c 'cd /var/www/portal && composer install' &&
+	 cd /var/www/portal && 
+	 composer install &&
 	 
 	 tput setaf 6 &&
 	 echo 'sudo chown -R apache:apache vendor' &&
@@ -129,19 +130,19 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 	tput setaf 6
 	 	echo 'php artisan migrate:reset'
 	 	tput sgr0				 	
-	 	php artisan migrate:reset
+	 	sudo php artisan migrate:reset
 	 fi
 
 	 tput setaf 6 &&
 	 echo 'php artisan migrate --force' &&
 	 tput sgr0 &&
-	 php artisan migrate --force &&				 			 
+	 sudo php artisan migrate --force &&				 			 
 
 	 if [ $SEEDER == 'true' ]; then
 	 	tput setaf 6
 	 	echo 'php artisan db:seed'
 	 	tput sgr0				 	
-	 	php artisan db:seed
+	 	sudo php artisan db:seed
 	 fi
 
 	 if [ $EXEC_SQL == 'true' ]; then
@@ -149,7 +150,7 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 	echo 'mysql -u$MYSQL_USER -p$MYSQL_PASS $DATABASE < $EXEC_SQL_FILE'
 	 	tput sgr0	
 	 	cd $DEPLOY_PATH/sql			 	
-	 	mysql -u$MYSQL_USER -p$MYSQL_PASS $DATABASE < $EXEC_SQL_FILE
+	 	sudo mysql -u$MYSQL_USER -p$MYSQL_PASS $DATABASE < $EXEC_SQL_FILE
 	 	cd $DEPLOY_PATH
 	 fi				 
 
@@ -164,7 +165,7 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 echo 'sudo systemctl restart httpd.service' &&
 	 tput sgr0 &&
 	 sudo systemctl restart httpd.service &&
-	 sudo systemctl -q status httpd.service &&
+	 systemctl -q status httpd.service &&
 	 
 	 > /var/www/portal/resources/views/site/includes/release-date.blade.php &&
 	 echo $RELEASE_TIME >> /var/www/portal/resources/views/site/includes/release-date.blade.php &&
@@ -181,16 +182,16 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 tput setaf 1 &&
 	 echo "Deleting CLEANUP files"
 	 if [ $CLEANUP_VERBOSE == "true" ]; then
-	 	rm -rfv "${CLEANUP[@]}"
+	 	sudo rm -rfv "${CLEANUP[@]}"
 	 else 
-	 	rm -rf "${CLEANUP[@]}"
+	 	sudo rm -rf "${CLEANUP[@]}"
 	 fi
 	 
 	 tput sgr0 &&
 
 	 echo 'Deplyed at: ' $RELEASE_TIME && 
 
-	 php artisan up &&
+	 sudo php artisan up &&
 
 	 tput bold &&
 	 tput setaf 1 &&

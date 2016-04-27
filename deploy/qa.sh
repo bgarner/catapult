@@ -12,7 +12,7 @@ displayHeader ()
 {
 	clear
 	tput bold
-	tput setaf 2
+	tput setaf 3
 	echo '    ______________       ____             __        __'
 	echo '   / ____/ ____/ /      / __ \____  _____/ /_____ _/ /'
 	echo '  / /_  / / __/ /      / /_/ / __ \/ ___/ __/ __ `/ / '
@@ -22,10 +22,10 @@ displayHeader ()
 	tput sgr0  
 }
 
-DEPLOY_SERVER=(ghost.dev)
-DEPLOY_HOST=portal.ghost.dev
+DEPLOY_SERVER=(fdms1ap01q.unix.ctcwest.ctc)
+DEPLOY_HOST=fdms1ap01q.unix.ctcwest.ctc
 DEPLOY_PATH=/var/www/portal
-DEPLOY_USER=root
+DEPLOY_USER=bgarner
 
 #git stuff
 BRANCH=master
@@ -42,8 +42,8 @@ EXEC_SQL=false
 EXEC_SQL_FILE=install.sql
 
 #testing stuff
-CURL_TEST=true
-PING_TEST=true
+CURL_TEST=false
+PING_TEST=false
 
 #cleanup
 CLEANUP=("notes.txt" "whiteboard" "__design" "readme.md" "public/thumb" "public/wireframes")
