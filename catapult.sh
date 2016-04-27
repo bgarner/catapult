@@ -42,7 +42,7 @@ echo "Deploying $APP_NAME to $DEPLOY_ENV environment."
 
 else
 
-echo "Usage: deploy.sh "
+echo "Usage: catapult.sh "
 
 exit 1
 
@@ -66,9 +66,11 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 php artisan down &&
 
 	 tput bold &&
-	 tput setab 4 &&
-	 echo '         GIT         ' &&
-	 tput sgr0 &&
+	 echo'' &&
+	 tput setaf 4 &&
+	 tput rev &&
+	 echo '    GIT                                                ' &&
+	 tput sgr0 &&	
 
 	 tput setaf 6 &&
 	 echo 'git fetch --all' &&
@@ -91,8 +93,10 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 git pull --rebase &&
 
 	 tput bold &&
-	 tput setab 4 &&
-	 echo '         COMPOSER         ' &&
+	 echo'' &&
+	 tput setaf 4 &&
+	 tput rev &&
+	 echo '    COMPOSER                                           ' &&
 	 tput sgr0 &&
 
 	 tput setaf 6 &&
@@ -115,8 +119,10 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 sudo chown -R apache:apache storage &&
 
 	 tput bold &&
-	 tput setab 4 &&
-	 echo '         DB MIGRATION         ' &&
+	 echo'' &&
+	 tput setaf 4 &&
+	 tput rev &&
+	 echo '    DB MIGRATION                                       ' &&
 	 tput sgr0 &&		
 
 	 if [ $MIGRATION_REFRESH == 'true' ]; then
@@ -147,22 +153,40 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 	cd $DEPLOY_PATH
 	 fi				 
 
-	 echo'' &&
-
-
-
 	 tput bold &&
-	 tput setab 4 &&
-	 echo '         APACHE         ' &&
+	 echo'' &&
+	 tput setaf 4 &&
+	 tput rev &&
+	 echo '    APACHE                                             ' &&
 	 tput sgr0 &&				 
 
 	 tput setaf 6 &&
 	 echo 'sudo systemctl restart httpd.service' &&
 	 tput sgr0 &&
 	 sudo systemctl restart httpd.service &&
+	 sudo systemctl -q status httpd.service &&
 	 
 	 > /var/www/portal/resources/views/site/includes/release-date.blade.php &&
 	 echo $RELEASE_TIME >> /var/www/portal/resources/views/site/includes/release-date.blade.php &&
+
+	 tput bold &&
+	 echo'' &&
+	 tput setaf 4 &&
+	 tput rev &&
+	 echo '    CLEAN UP                                           ' &&
+	 tput sgr0 &&	
+
+	 cd $DEPLOY_PATH &&
+
+	 tput setaf 1 &&
+	 echo "Deleting CLEANUP files"
+	 if [ $CLEANUP_VERBOSE == "true" ]; then
+	 	rm -rfv "${CLEANUP[@]}"
+	 else 
+	 	rm -rf "${CLEANUP[@]}"
+	 fi
+	 
+	 tput sgr0 &&
 
 	 echo 'Deplyed at: ' $RELEASE_TIME && 
 
@@ -173,21 +197,22 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 exit"
 done
 
-tput sgr0
-tput bold 
-tput setab 4 
-echo '         VERIFICATION         ' 
+tput bold
+echo''
+tput setaf 4
+tput rev
+echo '    VERIFICATION                                       '  
 tput sgr0 
 
 echo "Checking host: " $DEPLOY_HOST 
-
+echo''
 if [ $PING_TEST == 'true' ]; then
 	tput setaf 6 
 	echo "ping..."
 	tput sgr0 
 	ping -c 3 $DEPLOY_HOST 
 fi
-
+echo''
 if [ $CURL_TEST == 'true' ]; then
 	tput setaf 6 
 	echo "curl..."
@@ -195,11 +220,13 @@ if [ $CURL_TEST == 'true' ]; then
 	time curl -I http://$DEPLOY_HOST | grep HTTP 
 fi
 
+tput bel
 tput bold
 echo ""
-echo "*****************************" 
-echo "    Finished successfully    "
-echo "*****************************" 
+echo "*************************************************************" 
+echo "***************     Finished successfully     ***************"
+echo "*************************************************************" 
+echo ""
 
 
 

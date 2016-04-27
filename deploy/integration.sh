@@ -42,5 +42,10 @@ EXEC_SQL=false
 EXEC_SQL_FILE=install.sql
 
 #testing stuff
-CURL_TEST=true
-PING_TEST=true
+CURL_TEST=false
+PING_TEST=false
+
+#cleanup
+CLEANUP=("notes.txt" "whiteboard" "__design" "readme.md" "public/thumb" "public/wireframes")
+CLEANUP_VERBOSE=false
+
