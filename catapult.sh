@@ -36,6 +36,28 @@ exit 1
 
 fi
 
+
+testURLs ()
+{
+	for URL in ${TEST_URLS[@]}
+	do
+		echo "Checking http://$DEPLOY_HOST$URL ..."
+		HTTP_STATUS="$(curl -IL --silent http://$DEPLOY_HOST$URL | grep HTTP )"; 
+		if [[ $HTTP_STATUS == *"200"* ]]
+		then
+			tput setaf 2
+			echo -e "\xE2\x9C\x93 " "${HTTP_STATUS}";
+			tput sgr0
+		else
+		  	tput setaf 1
+		  	echo -e "\xE2\x98\xA0 " "${HTTP_STATUS}";
+		  	tput sgr0
+		fi
+	done
+}
+
+
+
 displayHeader                                                    
                                                          
 echo "Deploying $APP_NAME to $DEPLOY_ENV environment."
@@ -165,10 +187,20 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 echo 'sudo systemctl restart httpd.service' &&
 	 tput sgr0 &&
 	 sudo systemctl restart httpd.service &&
+
+	 tput setaf 6 &&
+	 echo 'APACHE STATUS' &&
+	 tput sgr0 && 
+
 	 systemctl -q status httpd.service &&
-	 
+
+	 sudo chmod 777 /var/www/portal/resources/views/site/includes/release-date.blade.php &&
 	 > /var/www/portal/resources/views/site/includes/release-date.blade.php &&
 	 echo $RELEASE_TIME >> /var/www/portal/resources/views/site/includes/release-date.blade.php &&
+
+	 tput setaf 6 &&
+	 echo 'Updated time stamp in footer' &&
+	 tput sgr0 &&
 
 	 tput bold &&
 	 echo'' &&
@@ -195,6 +227,18 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 
 	 tput bold &&
 	 tput setaf 1 &&
+
+	 tput setaf 6 &&
+	 echo 'PERMISSIONS AND OWNERS' &&
+	 tput sgr0 && 
+
+	 cd /var/www/portal &&
+	 sudo chmod -R 775 . &&
+	 echo -e '    \xE2\x9C\x93 ' '775' &&
+	
+	 sudo chown -R apache:apache . &&
+	 echo -e '    \xE2\x9C\x93 ' 'apache:apache' &&
+	 echo '' &&
 	 exit"
 done
 
@@ -209,19 +253,18 @@ echo "Checking host: " $DEPLOY_HOST
 echo''
 if [ $PING_TEST == 'true' ]; then
 	tput setaf 6 
-	echo "ping..."
+	echo "PING TEST"
 	tput sgr0 
 	ping -c 3 $DEPLOY_HOST 
 fi
 echo''
 if [ $CURL_TEST == 'true' ]; then
 	tput setaf 6 
-	echo "curl..."
+	echo "CURL TEST"
 	tput sgr0 
-	time curl -I http://$DEPLOY_HOST | grep HTTP 
+	testURLs 
 fi
 
-tput bel
 tput bold
 echo ""
 echo "*************************************************************" 

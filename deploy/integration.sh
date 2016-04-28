@@ -25,7 +25,7 @@ displayHeader ()
 DEPLOY_SERVER=(ghost.dev)
 DEPLOY_HOST=portal.ghost.dev
 DEPLOY_PATH=/var/www/portal
-DEPLOY_USER=root
+DEPLOY_USER=bgarner
 
 #git stuff
 BRANCH=master
@@ -44,6 +44,15 @@ EXEC_SQL_FILE=install.sql
 #testing stuff
 CURL_TEST=true
 PING_TEST=true
+TEST_URLS=(
+/0392
+/0392/calendar
+/0392/communication
+/kaskak
+/0392/alerts
+/0392/document
+/admin/document/2/edit
+)
 
 #cleanup
 CLEANUP=("notes.txt" "whiteboard" "__design" "readme.md" "public/thumb" "public/wireframes")

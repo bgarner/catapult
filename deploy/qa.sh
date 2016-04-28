@@ -44,6 +44,15 @@ EXEC_SQL_FILE=install.sql
 #testing stuff
 CURL_TEST=false
 PING_TEST=false
+TEST_URLS=(
+/0392
+/0392/calendar
+/0392/communication
+/kaskak
+/0392/alerts
+/0392/document
+/admin/document/2/edit
+)
 
 #cleanup
 CLEANUP=("notes.txt" "whiteboard" "__design" "readme.md" "public/thumb" "public/wireframes")
