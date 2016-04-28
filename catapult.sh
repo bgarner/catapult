@@ -10,30 +10,20 @@
 
 set -e
 
-
+RELEASE_TIME=`date`
 
 # Detect exactly 1 argument
 
 if (($# == 1)); then
+	# Include .sh from the deploy folder
+	DEPLOY_ENV=$1
+	DEPLOY_FILE=deploy/$DEPLOY_ENV.sh
 
-# Include .sh from the deploy folder
-
-DEPLOY_ENV=$1
-
-DEPLOY_FILE=deploy/$DEPLOY_ENV.sh
-
-if [ -f $DEPLOY_FILE ]; then
-
-source $DEPLOY_FILE
-
-else
-
-echo "Could not find deploy file for $DEPLOY_ENV environment,
-
-  it should be located in $DEPLOY_FILE"
-
-exit 1
-
+	if [ -f $DEPLOY_FILE ]; then
+		source $DEPLOY_FILE
+	else
+		echo "Could not find deploy file for $DEPLOY_ENV environment, it should be located in $DEPLOY_FILE"
+	exit 1
 fi
 
 
@@ -56,6 +46,15 @@ testURLs ()
 	done
 }
 
+sectionTitle ()
+{
+	 tput bold
+	 echo '' 
+	 tput setaf 4 
+	 tput rev 
+	 echo '    '$1'                                               ' &&
+	 tput sgr0 		
+}
 
 
 displayHeader                                                    
@@ -70,7 +69,7 @@ exit 1
 
 fi
 
-RELEASE_TIME=`date`
+
 
 
 # From local machine, get hash of the head of the desired branch
@@ -92,7 +91,12 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 tput setaf 4 &&
 	 tput rev &&
 	 echo '    GIT                                                ' &&
-	 tput sgr0 &&	
+	 tput sgr0 &&
+
+	 tput setaf 6 &&
+	 echo 'Using Remote: ' &&
+	 tput sgr0 &&
+	 git remote -v &&
 
 	 tput setaf 6 &&
 	 echo 'git fetch --all' &&
@@ -133,6 +137,8 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 tput sgr0 &&
 	 cd /var/www/portal && 
 	 composer install &&
+	 php artisan view:clear &&
+	 php artisan cache:clear &&
 	 
 	 tput setaf 6 &&
 	 echo 'sudo chown -R apache:apache vendor' &&
@@ -223,11 +229,10 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 
 	 echo 'Deplyed at: ' $RELEASE_TIME && 
 
-	 sudo php artisan up &&
-
 	 tput bold &&
-	 tput setaf 1 &&
-
+	 sudo php artisan up &&
+	 tput sgr0 && 
+	 
 	 tput setaf 6 &&
 	 echo 'PERMISSIONS AND OWNERS' &&
 	 tput sgr0 && 
