@@ -26,6 +26,159 @@ displayHeader ()
 	tput sgr0  
 }
 
+catapultinit ()
+{
+	echo "Creating a catapult config file in .catapult..."
+
+	echo ""
+	tput bold
+	echo "Project Setup"
+	tput sgr0
+
+	echo "Type the name of your app, followed by [ENTER]:"
+	read APP_NAME
+	echo "you typed "$APP_NAME
+
+	echo "Environment name? (e.g. production, testing, integration, etc)  [ENTER]:"
+	read CONFIG_TYPE
+	cd .catapult
+	touch $CONFIG_TYPE.catapult
+	echo -e '#################################################' >> $CONFIG_TYPE.catapult
+	echo -e '' >> $CONFIG_TYPE.catapult
+	echo -e  '#' $CONFIG_TYPE 'environment config for' $APP_NAME >> $CONFIG_TYPE.catapult
+	echo -e  '' >> $CONFIG_TYPE.catapult
+	echo -e  '#################################################' >> $CONFIG_TYPE.catapult
+	echo -e  '' >> $CONFIG_TYPE.catapult
+	echo -e  'APP_NAME="'$APP_NAME'"' >> $CONFIG_TYPE.catapult
+
+	echo -e '' >> $CONFIG_TYPE.catapult
+	echo -e '# Domain Config' >> $CONFIG_TYPE.catapult
+	echo ""
+	tput bold
+	echo "Server Details"
+	tput sgr0
+
+	echo "List your server IPs or Hosts, seperated by SPACE  [ENTER]:"
+	read DEPLOY_SERVER
+	echo -e 'DEPLOY_SERVER=('$DEPLOY_SERVER')' >> $CONFIG_TYPE.catapult
+
+	echo "What's your domain? (e.g. project.yourdomain.com or yourdomain.com)  [ENTER]:"
+	read DEPLOY_HOST
+	echo -e  'DEPLOY_HOST='$DEPLOY_HOST >> $CONFIG_TYPE.catapult
+
+	echo "Path to deploy to?  [ENTER]:"
+	read DEPLOY_PATH
+	echo -e  'DEPLOY_PATH='$DEPLOY_PATH >> $CONFIG_TYPE.catapult
+
+	echo "User to perform deploy (must have SSH access to all of your servers)  [ENTER]:"
+	read DEPLOY_USER
+	echo -e 'DEPLOY_USER='$DEPLOY_USER >> $CONFIG_TYPE.catapult
+
+	echo -e '' >> $CONFIG_TYPE.catapult
+	echo -e '# Git Options' >> $CONFIG_TYPE.catapult
+	echo ""
+	tput bold
+	echo "Git Options"
+	tput sgr0
+	echo "Branch to use for deploy?  [ENTER]:"
+	read BRANCH
+	echo -e 'BRANCH='$BRANCH >> $CONFIG_TYPE.catapult
+
+	echo -e '' >> $CONFIG_TYPE.catapult
+	echo -e '# Database Stuff' >> $CONFIG_TYPE.catapult
+	echo ""
+	tput bold
+	echo "Database Stuff"
+	tput sgr0
+	echo "Database name?  [ENTER]:"
+	read DATABASE
+	echo -e 'DATABASE='$DATABASE >> $CONFIG_TYPE.catapult
+	echo "Database host?  [ENTER]:"
+	read MYSQL_HOST
+	echo -e 'MYSQL_HOST='$MYSQL_HOST >> $CONFIG_TYPE.catapult
+	echo "Database user?  [ENTER]:"
+	read MYSQL_USER
+	echo -e 'MYSQL_USER='$MYSQL_USER >> $CONFIG_TYPE.catapult
+	echo "Database password?  [ENTER]:"
+	read MYSQL_PASS
+	echo -e 'MYSQL_PASS='$MYSQL_PASS >> $CONFIG_TYPE.catapult	
+	echo "Want to run 'migrate:reset' (y/n)?  [ENTER]:"
+	read MIGRATION_REFRESH
+	if [ $MIGRATION_REFRESH == "y" ]; then
+		echo -e 'MIGRATION_REFRESH=TRUE' >> $CONFIG_TYPE.catapult
+	else
+		echo -e 'MIGRATION_REFRESH=FALSE' >> $CONFIG_TYPE.catapult
+	fi
+	echo "Want to run 'db:seed' (y/n)?  [ENTER]:"
+	read SEEDER
+	if [ $SEEDER == "y" ]; then
+		echo -e 'SEEDER=TRUE' >> $CONFIG_TYPE.catapult
+	else
+		echo -e 'SEEDER=FALSE' >> $CONFIG_TYPE.catapult
+	fi	
+	echo "Want to execute an SQL script (y/n)?  [ENTER]:"
+	read EXEC_SQL
+	if [ $EXEC_SQL == "y" ]; then
+		echo -e 'EXEC_SQL=TRUE' >> $CONFIG_TYPE.catapult
+		echo "Script file name? (expected to be in <project_root>/sql)  [ENTER]:"
+		read EXEC_SQL_FILE
+		echo -e 'EXEC_SQL_FILE='$EXEC_SQL_FILE >> $CONFIG_TYPE.catapult
+	else
+		echo -e 'EXEC_SQL=FALSE' >> $CONFIG_TYPE.catapult
+	fi	
+
+	echo -e '' >> $CONFIG_TYPE.catapult
+	echo -e '# Testing Stuff' >> $CONFIG_TYPE.catapult
+	echo ""
+	tput bold
+	echo "Testing Stuff"
+	tput sgr0	
+	echo "Want to ping your project's domain (y/n)?  [ENTER]:"
+	read PING_TEST
+	if [ $PING_TEST == "y" ]; then
+		echo -e 'PING_TEST=TRUE' >> $CONFIG_TYPE.catapult
+	else
+		echo -e 'PING_TEST=FALSE' >> $CONFIG_TYPE.catapult
+	fi
+	echo "Want to curl some URLs (y/n)?  [ENTER]:"
+	read CURL_TEST
+	if [ $CURL_TEST == "y" ]; then
+		echo -e 'CURL_TEST=TRUE' >> $CONFIG_TYPE.catapult
+		echo "List some URLs to test, seperated by spaces (e.g. /login /whatever/resource)  [ENTER]:"
+		read TEST_URLS
+		echo -e 'TEST_URLS=('$TEST_URLS')' >> $CONFIG_TYPE.catapult
+	else
+		echo -e 'CURL_TEST=FALSE' >> $CONFIG_TYPE.catapult
+	fi	
+
+	echo -e '' >> $CONFIG_TYPE.catapult
+	echo -e '# Clean Up' >> $CONFIG_TYPE.catapult
+	echo ""
+	tput bold
+	echo "Clean Up"
+	tput sgr0	
+	echo "Verbose cleanup -- this can be pretty verbose (y/n)?  [ENTER]:"
+	read CLEANUP_VERBOSE
+	if [ $CLEANUP_VERBOSE == "y" ]; then
+		echo -e 'CLEANUP_VERBOSE=TRUE' >> $CONFIG_TYPE.catapult
+	else
+		echo -e 'CLEANUP_VERBOSE=FALSE' >> $CONFIG_TYPE.catapult
+	fi
+	echo "List files or folders your want to delete after a delpoy, seperated by SPACE  [ENTER]:"
+	read CLEANUP
+	echo -e 'CLEANUP=('$CLEANUP')' >> $CONFIG_TYPE.catapult
+
+	echo ""
+	tput bold
+	echo "We are done!"
+	tput sgr0	
+	echo ""
+
+	echo "Created '$CONFIG_TYPE.catapult' in .catapult. Feel free to edit this files as needed."
+	echo "You can now deploy to that environment by typing 'catapult "$CONFIG_TYPE"'. Have fun!"
+}
+
+
 RELEASE_TIME=`date`
 displayHeader                                                    
 
@@ -34,7 +187,7 @@ displayHeader
 if (($# == 1)); then
 
 	if [ $1 == "init" ]; then
-		echo "let's run the init!"
+		catapultinit
 		exit 1
 	fi
 
@@ -77,6 +230,8 @@ sectionTitle ()
 	 echo '    '$1'                                               ' &&
 	 tput sgr0 		
 }
+
+
 
 
                                                          
