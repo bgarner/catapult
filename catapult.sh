@@ -17,7 +17,7 @@ RELEASE_TIME=`date`
 if (($# == 1)); then
 	# Include .sh from the deploy folder
 	DEPLOY_ENV=$1
-	DEPLOY_FILE=catapult/$DEPLOY_ENV.sh
+	DEPLOY_FILE=catapult/$DEPLOY_ENV.catapult
 
 	if [ -f $DEPLOY_FILE ]; then
 		source $DEPLOY_FILE
@@ -26,6 +26,20 @@ if (($# == 1)); then
 	exit 1
 fi
 
+displayHeader ()
+{
+	clear
+	tput bold
+	tput setaf 5
+	echo '               __                      .__   __   '
+	echo '  ____ _____ _/  |______  ______  __ __|  |_/  |_ '
+	echo '_/ ___\\__  \\   __\__  \ \____ \|  |  \  |\   __\'
+	echo '\  \___ / __ \|  |  / __ \|  |_> >  |  /  |_|  |  '
+	echo ' \___  >____  /__| (____  /   __/|____/|____/__|  '
+	echo '     \/     \/          \/|__|    '
+	echo ''
+	tput sgr0  
+}
 
 testURLs ()
 {
