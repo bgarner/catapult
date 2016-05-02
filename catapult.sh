@@ -3,28 +3,13 @@
 #################################################
 
 # General deploy script.  Depends on
-
-# environment-specific script in deploy/ dir
+# environment-specific script in .catapult/ dir
 
 #################################################
 
 set -e
 
-RELEASE_TIME=`date`
-
-# Detect exactly 1 argument
-
-if (($# == 1)); then
-	# Include .sh from the deploy folder
-	DEPLOY_ENV=$1
-	DEPLOY_FILE=.catapult/$DEPLOY_ENV.catapult
-
-	if [ -f $DEPLOY_FILE ]; then
-		source $DEPLOY_FILE
-	else
-		echo "Could not find deploy file for $DEPLOY_ENV environment, it should be located in $DEPLOY_FILE"
-	exit 1
-fi
+#source func.sh
 
 displayHeader ()
 {
@@ -40,6 +25,29 @@ displayHeader ()
 	echo ''
 	tput sgr0  
 }
+
+RELEASE_TIME=`date`
+displayHeader                                                    
+
+# Detect exactly 1 argument
+
+if (($# == 1)); then
+
+	if [ $1 == "init" ]; then
+		echo "let's run the init!"
+		exit 1
+	fi
+
+	# Include .sh from the deploy folder
+	DEPLOY_ENV=$1
+	DEPLOY_FILE=.catapult/$DEPLOY_ENV.catapult
+
+	if [ -f $DEPLOY_FILE ]; then
+		source $DEPLOY_FILE
+	else
+		echo "Could not find deploy file for $DEPLOY_ENV environment, it should be located in $DEPLOY_FILE"
+	exit 1
+fi
 
 testURLs ()
 {
@@ -71,7 +79,6 @@ sectionTitle ()
 }
 
 
-displayHeader                                                    
                                                          
 echo "Deploying $APP_NAME to $DEPLOY_ENV environment."
 
@@ -82,8 +89,6 @@ echo "Usage: catapult.sh "
 exit 1
 
 fi
-
-
 
 
 # From local machine, get hash of the head of the desired branch

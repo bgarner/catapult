@@ -12,6 +12,7 @@ DEPLOY_SERVER=(ghost.dev)
 DEPLOY_HOST=portal.ghost.dev
 DEPLOY_PATH=/var/www/portal
 DEPLOY_USER=bgarner
+DEPLOY_PASSWORD=ketchup9
 
 #git stuff
 BRANCH=master
@@ -19,6 +20,7 @@ TAG=null
 
 #db stuff
 DATABASE=fglportal
+MYSQL_HOST=127.0.0.1
 MYSQL_USER=root
 MYSQL_PASS=root
 MIGRATION_REFRESH=false
