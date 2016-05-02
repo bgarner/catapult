@@ -17,7 +17,7 @@ RELEASE_TIME=`date`
 if (($# == 1)); then
 	# Include .sh from the deploy folder
 	DEPLOY_ENV=$1
-	DEPLOY_FILE=deploy/$DEPLOY_ENV.sh
+	DEPLOY_FILE=catapult/$DEPLOY_ENV.sh
 
 	if [ -f $DEPLOY_FILE ]; then
 		source $DEPLOY_FILE
