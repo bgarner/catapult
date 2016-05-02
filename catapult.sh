@@ -105,26 +105,27 @@ catapultinit ()
 	echo "Want to run 'migrate:reset' (y/n)?  [ENTER]:"
 	read MIGRATION_REFRESH
 	if [ $MIGRATION_REFRESH == "y" ]; then
-		echo -e 'MIGRATION_REFRESH=TRUE' >> $CONFIG_TYPE.catapult
+		echo -e 'MIGRATION_REFRESH=true' >> $CONFIG_TYPE.catapult
 	else
-		echo -e 'MIGRATION_REFRESH=FALSE' >> $CONFIG_TYPE.catapult
+		echo -e 'MIGRATION_REFRESH=false' >> $CONFIG_TYPE.catapult
 	fi
 	echo "Want to run 'db:seed' (y/n)?  [ENTER]:"
 	read SEEDER
 	if [ $SEEDER == "y" ]; then
-		echo -e 'SEEDER=TRUE' >> $CONFIG_TYPE.catapult
+		echo -e 'SEEDER=true' >> $CONFIG_TYPE.catapult
 	else
-		echo -e 'SEEDER=FALSE' >> $CONFIG_TYPE.catapult
+		echo -e 'SEEDER=false' >> $CONFIG_TYPE.catapult
 	fi	
 	echo "Want to execute an SQL script (y/n)?  [ENTER]:"
 	read EXEC_SQL
 	if [ $EXEC_SQL == "y" ]; then
-		echo -e 'EXEC_SQL=TRUE' >> $CONFIG_TYPE.catapult
+		echo -e 'EXEC_SQL=true' >> $CONFIG_TYPE.catapult
 		echo "Script file name? (expected to be in <project_root>/sql)  [ENTER]:"
 		read EXEC_SQL_FILE
 		echo -e 'EXEC_SQL_FILE='$EXEC_SQL_FILE >> $CONFIG_TYPE.catapult
 	else
-		echo -e 'EXEC_SQL=FALSE' >> $CONFIG_TYPE.catapult
+		echo -e 'EXEC_SQL=false' >> $CONFIG_TYPE.catapult
+		echo -e 'EXEC_SQL_FILE=null' >> $CONFIG_TYPE.catapult
 	fi	
 
 	echo -e '' >> $CONFIG_TYPE.catapult
@@ -136,19 +137,20 @@ catapultinit ()
 	echo "Want to ping your project's domain (y/n)?  [ENTER]:"
 	read PING_TEST
 	if [ $PING_TEST == "y" ]; then
-		echo -e 'PING_TEST=TRUE' >> $CONFIG_TYPE.catapult
+		echo -e 'PING_TEST=true' >> $CONFIG_TYPE.catapult
 	else
-		echo -e 'PING_TEST=FALSE' >> $CONFIG_TYPE.catapult
+		echo -e 'PING_TEST=false' >> $CONFIG_TYPE.catapult
 	fi
 	echo "Want to curl some URLs (y/n)?  [ENTER]:"
 	read CURL_TEST
 	if [ $CURL_TEST == "y" ]; then
-		echo -e 'CURL_TEST=TRUE' >> $CONFIG_TYPE.catapult
+		echo -e 'CURL_TEST=true' >> $CONFIG_TYPE.catapult
 		echo "List some URLs to test, seperated by spaces (e.g. /login /whatever/resource)  [ENTER]:"
 		read TEST_URLS
 		echo -e 'TEST_URLS=('$TEST_URLS')' >> $CONFIG_TYPE.catapult
 	else
-		echo -e 'CURL_TEST=FALSE' >> $CONFIG_TYPE.catapult
+		echo -e 'CURL_TEST=false' >> $CONFIG_TYPE.catapult
+		echo -e 'TEST_URLS=' >> $CONFIG_TYPE.catapult
 	fi	
 
 	echo -e '' >> $CONFIG_TYPE.catapult
@@ -160,9 +162,9 @@ catapultinit ()
 	echo "Verbose cleanup -- this can be pretty verbose (y/n)?  [ENTER]:"
 	read CLEANUP_VERBOSE
 	if [ $CLEANUP_VERBOSE == "y" ]; then
-		echo -e 'CLEANUP_VERBOSE=TRUE' >> $CONFIG_TYPE.catapult
+		echo -e 'CLEANUP_VERBOSE=true' >> $CONFIG_TYPE.catapult
 	else
-		echo -e 'CLEANUP_VERBOSE=FALSE' >> $CONFIG_TYPE.catapult
+		echo -e 'CLEANUP_VERBOSE=false' >> $CONFIG_TYPE.catapult
 	fi
 	echo "List files or folders your want to delete after a delpoy, seperated by SPACE  [ENTER]:"
 	read CLEANUP
@@ -170,10 +172,8 @@ catapultinit ()
 
 	echo ""
 	tput bold
-	echo "We are done!"
+	echo "We're done!"
 	tput sgr0	
-	echo ""
-
 	echo "Created '$CONFIG_TYPE.catapult' in .catapult. Feel free to edit this files as needed."
 	echo "You can now deploy to that environment by typing 'catapult "$CONFIG_TYPE"'. Have fun!"
 }
