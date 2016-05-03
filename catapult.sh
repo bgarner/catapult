@@ -8,8 +8,7 @@
 #################################################
 
 set -e
-
-#source func.sh
+CATAPULT_ENV_DIR=.catapult
 
 displayHeader ()
 {
@@ -30,6 +29,13 @@ catapultinit ()
 {
 	echo "Creating a catapult config file in .catapult..."
 
+	if [[ -d "${CATAPULT_ENV_DIR}" && ! -L "${CATAPULT_ENV_DIR}" ]] ; then
+ 		:
+	else
+		echo "Creating .catapult directory"
+		mkdir .catapult
+	fi
+
 	echo ""
 	tput bold
 	echo "Project Setup"
@@ -37,7 +43,6 @@ catapultinit ()
 
 	echo "Type the name of your app, followed by [ENTER]:"
 	read APP_NAME
-	echo "you typed "$APP_NAME
 
 	echo "Environment name? (e.g. production, testing, integration, etc)  [ENTER]:"
 	read CONFIG_TYPE
@@ -177,7 +182,6 @@ catapultinit ()
 	echo "Created '$CONFIG_TYPE.catapult' in .catapult. Feel free to edit this files as needed."
 	echo "You can now deploy to that environment by typing 'catapult "$CONFIG_TYPE"'. Have fun!"
 }
-
 
 RELEASE_TIME=`date`
 displayHeader                                                    
