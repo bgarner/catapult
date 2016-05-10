@@ -304,26 +304,26 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 tput sgr0 &&
 
 	 tput setaf 6 &&
-	 echo 'sudo chown -R bgarner:bgarner vendor ' &&
-	 echo 'sudo chown -R bgarner:bgarner storage ' &&
+	 echo 'sudo chown -R $COMPOSER_USER:$COMPOSER_USER vendor ' &&
+	 echo 'sudo chown -R $COMPOSER_USER:$COMPOSER_USER storage ' &&
 	 tput sgr0 &&
-	 sudo chown -R bgarner:bgarner vendor &&
-	 sudo chown -R bgarner:bgarner storage &&
+	 sudo chown -R $COMPOSER_USER:$COMPOSER_USER vendor &&
+	 sudo chown -R $COMPOSER_USER:$COMPOSER_USER storage &&
 
 	 tput setaf 6 &&
 	 echo 'composer install' &&
 	 tput sgr0 &&
-	 cd /var/www/portal && 
-	 composer install &&
+	 cd $DEPLOY_PATH && 
+	 su $COMPOSER_USER -c 'composer install' &&
 	 php artisan view:clear &&
 	 php artisan cache:clear &&
 	 
 	 tput setaf 6 &&
-	 echo 'sudo chown -R apache:apache vendor' &&
-	 echo 'sudo chown -R apache:apache storage' &&
+	 echo 'sudo chown -R $APACHE_USER:$APACHE_USER vendor/' &&
+	 echo 'sudo chown -R $APACHE_USER:$APACHE_USER storage' &&
 	 tput sgr0 &&
-	 sudo chown -R apache:apache vendor &&
-	 sudo chown -R apache:apache storage &&
+	 sudo chown -R $APACHE_USER:$APACHE_USER vendor &&
+	 sudo chown -R $APACHE_USER:$APACHE_USER storage &&
 
 	 tput bold &&
 	 echo'' &&
@@ -356,7 +356,7 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 	echo 'mysql -u$MYSQL_USER -p$MYSQL_PASS $DATABASE < $EXEC_SQL_FILE'
 	 	tput sgr0	
 	 	cd $DEPLOY_PATH/sql			 	
-	 	sudo mysql -u$MYSQL_USER -p$MYSQL_PASS $DATABASE < $EXEC_SQL_FILE
+	 	mysql -u$MYSQL_USER -p$MYSQL_PASS $DATABASE < $EXEC_SQL_FILE
 	 	cd $DEPLOY_PATH
 	 fi				 
 
@@ -368,19 +368,19 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 tput sgr0 &&				 
 
 	 tput setaf 6 &&
-	 echo 'sudo systemctl restart httpd.service' &&
+	 echo '$APACHE_RESTART' &&
 	 tput sgr0 &&
-	 sudo systemctl restart httpd.service &&
+	 $APACHE_RESTART &&
 
 	 tput setaf 6 &&
 	 echo 'APACHE STATUS' &&
 	 tput sgr0 && 
 
-	 systemctl -q status httpd.service &&
+	 $APACHE_STATUS &&
 
-	 sudo chmod 777 /var/www/portal/resources/views/site/includes/release-date.blade.php &&
-	 > /var/www/portal/resources/views/site/includes/release-date.blade.php &&
-	 echo $RELEASE_TIME >> /var/www/portal/resources/views/site/includes/release-date.blade.php &&
+	 sudo chmod 777 $DEPLOY_PATH/resources/views/site/includes/release-date.blade.php &&
+	 > $DEPLOY_PATH/resources/views/site/includes/release-date.blade.php &&
+	 echo $RELEASE_TIME >> $DEPLOY_PATH/resources/views/site/includes/release-date.blade.php &&
 
 	 tput setaf 6 &&
 	 echo 'Updated time stamp in footer' &&
@@ -415,12 +415,16 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 echo 'PERMISSIONS AND OWNERS' &&
 	 tput sgr0 && 
 
-	 cd /var/www/portal &&
+	 cd $DEPLOY_PATH &&
 	 sudo chmod -R 775 . &&
 	 echo -e '    \xE2\x9C\x93 ' '775' &&
-	
-	 sudo chown -R apache:apache . &&
-	 echo -e '    \xE2\x9C\x93 ' 'apache:apache' &&
+
+	 cd $DEPLOY_PATH/storage &&
+	 sudo chmod -R 777 . &&
+	 echo -e '    \xE2\x9C\x93 ' '777 storage directory' &&
+	 
+	 sudo chown -R $APACHE_USER:$APACHE_USER . &&
+	 echo -e '    \xE2\x9C\x93 ' 'storage owned by $APACHE_USER:$APACHE_USER' &&
 	 echo '' &&
 	 exit"
 done
