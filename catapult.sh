@@ -320,11 +320,11 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 tput sgr0 &&
 
 	 tput setaf 6 &&
-	 echo 'sudo chown -R $COMPOSER_USER:$COMPOSER_USER vendor ' &&
+	 echo 'sudo chown -R $COMPOSER_USER:$COMPOSER_USER $DEPLOY_PATH/vendor ' &&
 	 echo 'sudo chown -R $COMPOSER_USER:$COMPOSER_USER storage ' &&
 	 tput sgr0 &&
-	 sudo chown -R $COMPOSER_USER:$COMPOSER_USER vendor &&
-	 sudo chown -R $COMPOSER_USER:$COMPOSER_USER storage &&
+	 sudo chown -R $COMPOSER_USER:$COMPOSER_USER $DEPLOY_PATH/vendor/ &&
+	 sudo chown -R $COMPOSER_USER:$COMPOSER_USER storage/ &&
 
 	 tput setaf 6 &&
 	 echo 'composer install' &&
@@ -338,8 +338,8 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 echo 'sudo chown -R $APACHE_USER:$APACHE_USER vendor/' &&
 	 echo 'sudo chown -R $APACHE_USER:$APACHE_USER storage' &&
 	 tput sgr0 &&
-	 sudo chown -R $APACHE_USER:$APACHE_USER vendor &&
-	 sudo chown -R $APACHE_USER:$APACHE_USER storage &&
+	 sudo chown -R $APACHE_USER:$APACHE_USER vendor/ &&
+	 sudo chown -R $APACHE_USER:$APACHE_USER storage/ &&
 
 	 tput bold &&
 	 echo'' &&
@@ -409,13 +409,18 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 echo '    CLEAN UP                                           ' &&
 	 tput sgr0 &&	
 
-	 cd $DEPLOY_PATH &&
-	 tput setaf 1 &&
-	 echo "Deleting CLEANUP files"
-	 if [ $CLEANUP_VERBOSE == "true" ]; then
-	 	sudo rm -rfv "${CLEANUP[@]}"
-	 else 
-	 	sudo rm -rf "${CLEANUP[@]}"
+	 if [ $PERFORM_CLEANUP == 'true' ]; then
+		 cd $DEPLOY_PATH 
+		 tput setaf 1
+		 echo "Deleting CLEANUP files"
+		 if [ $CLEANUP_VERBOSE == 'true' ]; then
+		 	sudo rm -rfv $DEPLOY_PATH/"${CLEANUP[@]}"	
+		 else 
+		 	sudo rm -rf $DEPLOY_PATH/"${CLEANUP[@]}"
+		 fi
+	 else
+	 	tput setaf 1 
+	 	echo "-- Skipping Cleanup --" 
 	 fi
 	 
 	 tput sgr0 &&
@@ -424,19 +429,15 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 tput setaf 6 &&
 	 echo 'PERMISSIONS AND OWNERS' &&
 	 tput sgr0 && 
-
-	 cd $DEPLOY_PATH &&
-	 sudo chmod -R 775 . &&
-	 echo -e '    \xE2\x9C\x93 ' '775' &&
-
-	 cd $DEPLOY_PATH/storage &&
-	 sudo chmod -R 777 . &&
-	 echo -e '    \xE2\x9C\x93 ' '777 storage directory' &&
+	
+	 sudo chmod -R 775 $DEPLOY_PATH &&
+	 echo -e '    \xE2\x9C\x93 ' '775 on '$DEPLOY_PATH &&
 	 
-	 sudo chown -R $APACHE_USER:$APACHE_USER . &&
+	 sudo chown -R $APACHE_USER:$APACHE_USER $DEPLOY_PATH &&
 	 echo -e '    \xE2\x9C\x93 ' 'storage owned by $APACHE_USER:$APACHE_USER' &&
 	 echo '' &&
 
+	 cd $DEPLOY_PATH &&
 	 tput bold &&
 	 sudo php artisan up &&
 	 tput sgr0 && 
