@@ -79,6 +79,22 @@ catapultinit ()
 	read DEPLOY_USER
 	echo -e 'DEPLOY_USER='$DEPLOY_USER >> $CONFIG_TYPE.catapult
 
+	echo "User to perform COMPOSER commands  [ENTER]:"
+	read COMPOSER_USER
+	echo -e 'COMPOSER_USER='$COMPOSER_USER >> $CONFIG_TYPE.catapult
+
+	echo "User who should own APACHE [ENTER]:"
+	read APACHE_USER
+	echo -e 'APACHE_USER='$APACHE_USER >> $CONFIG_TYPE.catapult
+
+	echo "Command to restart APACHE [ENTER]:"
+	read APACHE_RESTART
+	echo -e 'APACHE_RESTART="'$APACHE_RESTART'"' >> $CONFIG_TYPE.catapult
+
+	echo "Command to get status of APACHE [ENTER]:"
+	read APACHE_RESTART
+	echo -e 'APACHE_STATUS="'$APACHE_STATUS'"' >> $CONFIG_TYPE.catapult
+
 	echo -e '' >> $CONFIG_TYPE.catapult
 	echo -e '# Git Options' >> $CONFIG_TYPE.catapult
 	echo ""
@@ -394,7 +410,6 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 tput sgr0 &&	
 
 	 cd $DEPLOY_PATH &&
-
 	 tput setaf 1 &&
 	 echo "Deleting CLEANUP files"
 	 if [ $CLEANUP_VERBOSE == "true" ]; then
@@ -404,13 +419,8 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 fi
 	 
 	 tput sgr0 &&
-
 	 echo 'Deplyed at: ' $RELEASE_TIME && 
-
-	 tput bold &&
-	 sudo php artisan up &&
-	 tput sgr0 && 
-	 
+	
 	 tput setaf 6 &&
 	 echo 'PERMISSIONS AND OWNERS' &&
 	 tput sgr0 && 
@@ -426,6 +436,11 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 sudo chown -R $APACHE_USER:$APACHE_USER . &&
 	 echo -e '    \xE2\x9C\x93 ' 'storage owned by $APACHE_USER:$APACHE_USER' &&
 	 echo '' &&
+
+	 tput bold &&
+	 sudo php artisan up &&
+	 tput sgr0 && 
+
 	 exit"
 done
 
