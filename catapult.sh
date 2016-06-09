@@ -298,9 +298,9 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 sudo git fetch --all &&
 
 	 tput setaf 6 &&
-	 echo 'git reset --hard origin/$BRANCH' &&
+	 echo 'git reset --hard $REMOTENAME/$BRANCH' &&
 	 tput sgr0 &&
-	 sudo git reset --hard origin/$BRANCH && 
+	 sudo git reset --hard $REMOTENAME/$BRANCH && 
 
 	 tput setaf 6 &&
 	 echo 'git checkout $BRANCH' &&
