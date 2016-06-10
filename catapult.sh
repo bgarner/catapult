@@ -396,7 +396,12 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 
 	 sudo chmod 777 $DEPLOY_PATH/resources/views/site/includes/release-date.blade.php &&
 	 > $DEPLOY_PATH/resources/views/site/includes/release-date.blade.php &&
-	 echo $RELEASE_TIME >> $DEPLOY_PATH/resources/views/site/includes/release-date.blade.php &&
+	 
+	 if [ $DEPLOY_TYPE == 'dev' ]; then
+	 	echo $RELEASE_TIME - $REMOTENAME/$BRANCH >> $DEPLOY_PATH/resources/views/site/includes/release-date.blade.php
+	 else
+	 	echo $RELEASE_TIME >> $DEPLOY_PATH/resources/views/site/includes/release-date.blade.php
+	 fi
 
 	 tput setaf 6 &&
 	 echo 'Updated time stamp in footer' &&
