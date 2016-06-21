@@ -330,7 +330,7 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 echo 'composer install' &&
 	 tput sgr0 &&
 	 cd $DEPLOY_PATH && 
-	 su $COMPOSER_USER -c 'composer install' &&
+	 composer install &&
 	 php artisan view:clear &&
 	 php artisan cache:clear &&
 	 
