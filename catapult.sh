@@ -10,20 +10,20 @@
 set -e
 CATAPULT_ENV_DIR=.catapult
 
-displayHeader ()
-{
-	clear
-	tput bold
-	tput setaf 5
-	echo '               __                      .__   __   '
-	echo '  ____ _____ _/  |______  ______  __ __|  |_/  |_ '
-	echo '_/ ___\\__  \\   __\__  \ \____ \|  |  \  |\   __\'
-	echo '\  \___ / __ \|  |  / __ \|  |_> >  |  /  |_|  |  '
-	echo ' \___  >____  /__| (____  /   __/|____/|____/__|  '
-	echo '     \/     \/          \/|__|    '
-	echo ''
-	tput sgr0  
-}
+# displayHeader ()
+# {
+# 	clear
+# 	tput bold
+# 	tput setaf 5
+# 	echo '               __                      .__   __   '
+# 	echo '  ____ _____ _/  |______  ______  __ __|  |_/  |_ '
+# 	echo '_/ ___\\__  \\   __\__  \ \____ \|  |  \  |\   __\'
+# 	echo '\  \___ / __ \|  |  / __ \|  |_> >  |  /  |_|  |  '
+# 	echo ' \___  >____  /__| (____  /   __/|____/|____/__|  '
+# 	echo '     \/     \/          \/|__|    '
+# 	echo ''
+# 	tput sgr0  
+# }
 
 catapultinit ()
 {
@@ -200,7 +200,8 @@ catapultinit ()
 }
 
 RELEASE_TIME=`date`
-displayHeader                                                    
+
+                                              
 
 # Detect exactly 1 argument
 
@@ -252,7 +253,29 @@ sectionTitle ()
 }
 
 
+clear
+tput bold
 
+if [[ $DEPLOY_TYPE == 'prod' ]]; then
+	tput setaf 1
+fi
+
+if [[ $DEPLOY_TYPE == 'qa' ]]; then
+	tput setaf 3
+fi
+
+if [[ $DEPLOY_TYPE == 'dev' ]]; then
+	tput setaf 2
+fi
+
+echo '               __                      .__   __   '
+echo '  ____ _____ _/  |______  ______  __ __|  |_/  |_ '
+echo '_/ ___\\__  \\   __\__  \ \____ \|  |  \  |\   __\'
+echo '\  \___ / __ \|  |  / __ \|  |_> >  |  /  |_|  |  '
+echo ' \___  >____  /__| (____  /   __/|____/|____/__|  '
+echo '     \/     \/          \/|__|    '
+echo ''
+tput sgr0
 
                                                          
 echo "Deploying $APP_NAME to $DEPLOY_ENV environment."
