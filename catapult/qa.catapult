@@ -1,0 +1,47 @@
+#################################################
+
+# Environment-specific script
+
+# sourced by deploy.sh
+
+#################################################
+
+APP_NAME="FGL Portal"
+
+DEPLOY_TYPE=qa
+DEPLOY_SERVER=(fdms1ap01q.unix.ctcwest.ctc)
+DEPLOY_HOST=fdms1ap01q.unix.ctcwest.ctc
+DEPLOY_PATH=/var/www/portal
+DEPLOY_USER=bgarner
+
+#git stuff
+BRANCH=master
+TAG=null
+
+#db stuff
+DATABASE=fglportal
+MYSQL_USER=root
+MYSQL_PASS=root
+MIGRATION_REFRESH=false
+SEEDER=false
+#sql file must be in 'sql' folder
+EXEC_SQL=false
+EXEC_SQL_FILE=install.sql
+
+#testing stuff
+CURL_TEST=false
+PING_TEST=false
+TEST_URLS=(
+/0392
+/0392/calendar
+/0392/communication
+/kaskak
+/0392/alerts
+/0392/document
+/admin/document/2/edit
+)
+
+#cleanup
+CLEANUP=("notes.txt" "whiteboard" "__design" "readme.md" "public/thumb" "public/wireframes")
+CLEANUP_VERBOSE=false
+
