@@ -300,7 +300,7 @@ do
 echo "Deploying on $SERVER"
 
 ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
-
+	 sudo -u apache scl enable rh-php70 bash &&
 	 sudo php artisan down &&
 
 	 tput bold &&
