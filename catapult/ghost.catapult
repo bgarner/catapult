@@ -8,14 +8,14 @@
 
 APP_NAME="FGL Portal"
 
-DEPLOY_TYPE=qa
-DEPLOY_SERVER=(fdms1ap01q.unix.ctcwest.ctc)
-DEPLOY_HOST=fdms1ap01q.unix.ctcwest.ctc
+DEPLOY_TYPE=dev
+DEPLOY_SERVER=(ghost.dev)
+DEPLOY_HOST=ghost.dev
 DEPLOY_PATH=/var/www/portal
 DEPLOY_USER=bgarner
 
 #git stuff
-REMOTENAME=origin
+REMOTENAME=github
 BRANCH=master
 TAG=null
 
@@ -48,5 +48,5 @@ TEST_URLS=(
 
 #cleanup
 PERFORM_CLEANUP=true
-CLEANUP_VERBOSE=false
+CLEANUP_VERBOSE=true
 CLEANUP=("notes.txt" "whiteboard" "__design" "readme.md" "public/thumb" "public/wireframes")
