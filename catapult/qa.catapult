@@ -15,7 +15,6 @@ DEPLOY_PATH=/var/www/portal
 DEPLOY_USER=bgarner
 
 #git stuff
-REMOTENAME=origin
 BRANCH=master
 TAG=null
 
@@ -29,24 +28,20 @@ SEEDER=false
 EXEC_SQL=false
 EXEC_SQL_FILE=install.sql
 
-COMPOSER_USER=bgarner
-APACHE_USER=apache
-APACHE_RESTART="sudo /usr/bin/systemctl restart httpd.service"
-APACHE_STATUS="systemctl -q status httpd.service"
-
 #testing stuff
-CURL_TEST=true
-PING_TEST=true
+CURL_TEST=false
+PING_TEST=false
 TEST_URLS=(
 /0392
 /0392/calendar
 /0392/communication
+/kaskak
 /0392/alerts
 /0392/document
 /admin/document/2/edit
 )
 
 #cleanup
-PERFORM_CLEANUP=true
-CLEANUP_VERBOSE=false
 CLEANUP=("notes.txt" "whiteboard" "__design" "readme.md" "public/thumb" "public/wireframes")
+CLEANUP_VERBOSE=false
+
