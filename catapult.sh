@@ -301,7 +301,9 @@ echo "Deploying on $SERVER"
 
 ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 
-	 sudo php artisan down &&
+     if [ $FRAMEWORK == 'laravel' ]; then
+	 	sudo php artisan down &&
+	 fi
 
 	 tput bold &&
 	 echo'' &&
@@ -466,10 +468,13 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 echo '' &&
 
 	 cd $DEPLOY_PATH &&
-	 tput bold &&
-	 sudo php artisan up &&
-	 tput sgr0 && 
 
+	 if [ $FRAMEWORK == 'laravel' ]; then
+	 	tput bold &&
+	 	sudo php artisan up &&
+	 	tput sgr0 && 
+	 fi	 
+	
 	 exit"
 done
 
