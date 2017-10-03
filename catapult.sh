@@ -228,7 +228,7 @@ testURLs ()
 	for URL in ${TEST_URLS[@]}
 	do
 		echo "Checking http://$DEPLOY_HOST$URL ..."
-		HTTP_STATUS="$(curl -IL --silent http://$DEPLOY_HOST$URL | grep HTTP )"; 
+		HTTP_STATUS="$(curl -IL -H 'Accept-Language: en' --silent http://$DEPLOY_HOST$URL | grep HTTP )"; 
 		if [[ $HTTP_STATUS == *"200"* ]]
 		then
 			tput setaf 2
