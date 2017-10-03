@@ -301,9 +301,11 @@ echo "Deploying on $SERVER"
 
 ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 
-     if [ $FRAMEWORK == 'laravel' ]; then
-	 	sudo php artisan down
-	 fi
+	 if [ $LARAVEL_VER == '5.5' ]; then
+	 	sudo /opt/rh/rh-php70/root/usr/bin/php artisan down
+	 else
+		sudo php artisan down
+ 	 fi
 
 	 tput bold &&
 	 echo'' &&
@@ -471,9 +473,11 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 
 	 tput bold &&
 
-	 if [ $FRAMEWORK == 'laravel' ]; then
-	 	sudo php artisan up
-	 fi	
+	 if [ $LARAVEL_VER == '5.5' ]; then
+	 	sudo /opt/rh/rh-php70/root/usr/bin/php artisan up
+	 else
+		sudo php artisan up
+ 	 fi
 
 	 tput sgr0 && 
 	 exit"
