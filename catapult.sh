@@ -383,7 +383,7 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 tput setaf 6 &&
 	 echo 'php artisan migrate --force' &&
 	 tput sgr0 &&
-	 sudo php artisan migrate --force &&				 			 
+	 php artisan migrate --force &&				 			 
 
 	 if [ $SEEDER == 'true' ]; then
 	 	tput setaf 6
