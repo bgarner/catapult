@@ -50,14 +50,13 @@ catapultinit ()
 	touch $CONFIG_TYPE.catapult
 	echo -e '#################################################' >> $CONFIG_TYPE.catapult
 	echo -e '' >> $CONFIG_TYPE.catapult
-	echo -e  '#' $CONFIG_TYPE 'environment config for' $APP_NAME >> $CONFIG_TYPE.catapult
-	echo -e  '' >> $CONFIG_TYPE.catapult
-	echo -e  '#################################################' >> $CONFIG_TYPE.catapult
-	echo -e  '' >> $CONFIG_TYPE.catapult
-	echo -e  'APP_NAME="'$APP_NAME'"' >> $CONFIG_TYPE.catapult
-
+	echo -e '#' $CONFIG_TYPE 'environment config for' $APP_NAME >> $CONFIG_TYPE.catapult
+	echo -e 'APP_NAME="'$APP_NAME'"' >> $CONFIG_TYPE.catapult
 	echo -e 'FRAMEWORK=laravel' >> $CONFIG_TYPE.catapult
 	echo -e 'DEPLOY_TYPE=('$CONFIG_TYPE')' >> $CONFIG_TYPE.catapult
+	echo -e '' >> $CONFIG_TYPE.catapult
+	echo -e '#################################################' >> $CONFIG_TYPE.catapult
+	echo -e '' >> $CONFIG_TYPE.catapult
 
 	echo -e '' >> $CONFIG_TYPE.catapult
 	echo -e '# Domain Config' >> $CONFIG_TYPE.catapult
