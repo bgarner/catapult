@@ -44,7 +44,7 @@ catapultinit ()
 	echo "Type the name of your app, followed by [ENTER]:"
 	read APP_NAME
 
-	echo "Environment name? (e.g. production, testing, integration, etc)  [ENTER]:"
+	echo "Environment type? (prod, qa, dev)  [ENTER]:"
 	read CONFIG_TYPE
 	cd .catapult
 	touch $CONFIG_TYPE.catapult
@@ -56,12 +56,19 @@ catapultinit ()
 	echo -e  '' >> $CONFIG_TYPE.catapult
 	echo -e  'APP_NAME="'$APP_NAME'"' >> $CONFIG_TYPE.catapult
 
+	echo -e 'FRAMEWORK=laravel' >> $CONFIG_TYPE.catapult
+	echo -e 'DEPLOY_TYPE=('$CONFIG_TYPE')' >> $CONFIG_TYPE.catapult
+
 	echo -e '' >> $CONFIG_TYPE.catapult
 	echo -e '# Domain Config' >> $CONFIG_TYPE.catapult
 	echo ""
 	tput bold
 	echo "Server Details"
 	tput sgr0
+
+	echo "What verison of Laravel are you using (Major.Minor e.g. 5.5)?   [ENTER]:"
+	read LARAVEL_VER
+	echo -e 'LARAVEL_VER=('$LARAVEL_VER')' >> $CONFIG_TYPE.catapult
 
 	echo "List your server IPs or Hosts, seperated by SPACE  [ENTER]:"
 	read DEPLOY_SERVER
