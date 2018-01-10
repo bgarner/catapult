@@ -1,0 +1,10 @@
+#################################################
+
+# dev environment config for somethingamazing
+APP_NAME="somethingamazing"
+FRAMEWORK=laravel
+DEPLOY_TYPE=dev
+
+#################################################
+
+# Domain Config

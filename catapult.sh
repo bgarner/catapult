@@ -10,23 +10,28 @@
 set -e
 CATAPULT_ENV_DIR=.catapult
 
-# displayHeader ()
-# {
-# 	clear
-# 	tput bold
-# 	tput setaf 5
-# 	echo '               __                      .__   __   '
-# 	echo '  ____ _____ _/  |______  ______  __ __|  |_/  |_ '
-# 	echo '_/ ___\\__  \\   __\__  \ \____ \|  |  \  |\   __\'
-# 	echo '\  \___ / __ \|  |  / __ \|  |_> >  |  /  |_|  |  '
-# 	echo ' \___  >____  /__| (____  /   __/|____/|____/__|  '
-# 	echo '     \/     \/          \/|__|    '
-# 	echo ''
-# 	tput sgr0  
-# }
+displayHeader ()
+{
+	clear
+	tput setaf 6
+	tput bold
+	echo '               __                      .__   __   '
+	echo '  ____ _____ _/  |______  ______  __ __|  |_/  |_ '
+	echo '_/ ___\\__  \\   __\__  \ \____ \|  |  \  |\   __\'
+	echo '\  \___ / __ \|  |  / __ \|  |_> >  |  /  |_|  |  '
+	echo ' \___  >____  /__| (____  /   __/|____/|____/__|  '
+	echo '     \/     \/          \/|__|    '
+	echo ''
+	tput sgr0  
+}
 
 catapultinit ()
 {
+	displayHeader
+	echo "--------------------------------------------------"
+	echo "This interactive console app will walk you through"
+	echo "the steps to create your .catapult deploy script"
+	echo ""
 	echo "Creating a catapult config file in .catapult..."
 
 	if [[ -d "${CATAPULT_ENV_DIR}" && ! -L "${CATAPULT_ENV_DIR}" ]] ; then
@@ -53,12 +58,11 @@ catapultinit ()
 	echo -e '#' $CONFIG_TYPE 'environment config for' $APP_NAME >> $CONFIG_TYPE.catapult
 	echo -e 'APP_NAME="'$APP_NAME'"' >> $CONFIG_TYPE.catapult
 	echo -e 'FRAMEWORK=laravel' >> $CONFIG_TYPE.catapult
-	echo -e 'DEPLOY_TYPE=('$CONFIG_TYPE')' >> $CONFIG_TYPE.catapult
+	echo -e 'DEPLOY_TYPE='$CONFIG_TYPE >> $CONFIG_TYPE.catapult
 	echo -e '' >> $CONFIG_TYPE.catapult
 	echo -e '#################################################' >> $CONFIG_TYPE.catapult
 	echo -e '' >> $CONFIG_TYPE.catapult
 
-	echo -e '' >> $CONFIG_TYPE.catapult
 	echo -e '# Domain Config' >> $CONFIG_TYPE.catapult
 	echo ""
 	tput bold
@@ -67,7 +71,7 @@ catapultinit ()
 
 	echo "What verison of Laravel are you using (Major.Minor e.g. 5.5)?   [ENTER]:"
 	read LARAVEL_VER
-	echo -e 'LARAVEL_VER=('$LARAVEL_VER')' >> $CONFIG_TYPE.catapult
+	echo -e 'LARAVEL_VER='$LARAVEL_VER >> $CONFIG_TYPE.catapult
 
 	echo "List your server IPs or Hosts, seperated by SPACE  [ENTER]:"
 	read DEPLOY_SERVER
