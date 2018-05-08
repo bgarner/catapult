@@ -312,7 +312,7 @@ echo "Deploying on $SERVER"
 ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 
 	 if [ $LARAVEL_VER == '5.5' ]; then
-	 	sudo /opt/rh/rh-php70/root/usr/bin/php artisan down
+	 	sudo /opt/rh/rh-php71/root/usr/bin/php artisan down
 	 else
 		sudo php artisan down
  	 fi
