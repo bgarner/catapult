@@ -484,7 +484,7 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 tput bold &&
 
 	 if [ $LARAVEL_VER == '5.5' ]; then
-	 	sudo /opt/rh/rh-php70/root/usr/bin/php artisan up
+	 	sudo /opt/rh/rh-php71/root/usr/bin/php artisan up
 	 else
 		sudo php artisan up
  	 fi
