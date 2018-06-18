@@ -401,7 +401,7 @@ ssh -t $DEPLOY_USER@$SERVER "cd $DEPLOY_PATH &&
 	 	tput setaf 6
 	 	echo 'php artisan db:seed'
 	 	tput sgr0				 	
-	 	sudo php artisan db:seed
+	 	php artisan db:seed
 	 fi
 
 	 if [ $EXEC_SQL == 'true' ]; then
