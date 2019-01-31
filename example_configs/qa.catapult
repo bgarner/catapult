@@ -8,8 +8,8 @@
 
 APP_NAME="FGL Portal"
 
-DEPLOY_SERVER=(fdms1ap01q.unix.ctcwest.ctc)
-DEPLOY_HOST=fdms1ap01q.unix.ctcwest.ctc
+DEPLOY_SERVER=(someting.somewhere.com)
+DEPLOY_HOST=something.somewhere.com
 DEPLOY_PATH=/var/www/portal
 DEPLOY_USER=bgarner
 
@@ -18,7 +18,7 @@ BRANCH=master
 TAG=null
 
 #db stuff
-DATABASE=fglportal
+DATABASE=portal
 MYSQL_USER=root
 MYSQL_PASS=root
 MIGRATION_REFRESH=false
